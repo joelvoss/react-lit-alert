@@ -15,7 +15,7 @@
     "require": "./dist/react-lit-alert.cjs",
     "import": "./dist/react-lit-alert.modern.js"
   },
-  "types": "dist/index.d.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "LICENSE"
