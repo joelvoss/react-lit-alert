@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { render, userEvent, wait } from './test-utils';
-import { axe } from 'jest-axe';
 
 import { Alert } from '../src/index';
 
@@ -32,10 +31,10 @@ describe('<Alert />', () => {
 
 	it('should not have ARIA violations', async () => {
 		let { container, queryByText } = render(<Comp />);
-		expect(await axe(container)).toHaveNoViolations();
+		await expect(container).toHaveNoAxeViolations();
 		userEvent.click(queryByText(/Add a message/i));
 		await wait(501);
-		expect(await axe(container)).toHaveNoViolations();
+		await expect(container).toHaveNoAxeViolations();
 	});
 
 	it('should render proper HTML', async () => {
