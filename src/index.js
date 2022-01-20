@@ -1,4 +1,4 @@
-import { cloneElement, forwardRef, useEffect, useMemo, useRef } from 'react';
+import * as React from 'react';
 import { render } from 'react-dom';
 import { VisuallyHidden } from '@react-lit/visually-hidden';
 import {
@@ -47,15 +47,15 @@ let renderTimer;
 /**
  * Alert renders screen-reader-friendly alert messages.
  */
-export const Alert = forwardRef(
+export const Alert = React.forwardRef(
 	(
 		{ as: Comp = 'div', children, type: regionType = 'polite', ...props },
 		parentRef,
 	) => {
-		const ownRef = useRef(null);
+		const ownRef = React.useRef(null);
 		const ref = useComposeRefs(parentRef, ownRef);
 
-		const child = useMemo(
+		const child = React.useMemo(
 			() => (
 				<Comp {...props} ref={ref}>
 					{children}
@@ -151,7 +151,7 @@ function renderAlerts() {
 							aria-live={regionType}
 						>
 							{Object.keys(elements[regionType]).map(key =>
-								cloneElement(elements[regionType][key], {
+								React.cloneElement(elements[regionType][key], {
 									key,
 									ref: null,
 								}),
@@ -175,10 +175,10 @@ function renderAlerts() {
  */
 function useMirrorEffects(regionType, element, ref) {
 	const prevType = usePrevious(regionType);
-	const mirror = useRef();
-	const mounted = useRef(false);
+	const mirror = React.useRef();
+	const mounted = React.useRef(false);
 
-	useEffect(() => {
+	React.useEffect(() => {
 		const ownerDocument = getOwnerDocument(ref.current);
 
 		if (!mounted.current) {
@@ -194,7 +194,7 @@ function useMirrorEffects(regionType, element, ref) {
 		}
 	}, [element, regionType, prevType, ref]);
 
-	useEffect(
+	React.useEffect(
 		() => () => {
 			mirror.current && mirror.current.unmount();
 		},
