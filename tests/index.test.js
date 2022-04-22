@@ -32,14 +32,14 @@ describe('<Alert />', () => {
 	it('should not have ARIA violations', async () => {
 		let { container, queryByText } = render(<Comp />);
 		await expect(container).toHaveNoAxeViolations();
-		userEvent.click(queryByText(/Add a message/i));
+		await userEvent.click(queryByText(/Add a message/i));
 		await wait(501);
 		await expect(container).toHaveNoAxeViolations();
 	});
 
 	it('should render proper HTML', async () => {
 		const { queryByText, queryAllByText } = render(<Comp />);
-		userEvent.click(queryByText(/Add a message/i));
+		await userEvent.click(queryByText(/Add a message/i));
 		await wait(501);
 
 		const elements = queryAllByText(/Message #1/i);

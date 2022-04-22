@@ -1,14 +1,14 @@
-import { Alert } from '../../src/index';
+import * as React from 'react';
 import { VisuallyHidden } from '@react-lit/visually-hidden';
 import { usePrevious } from '@react-lit/helper';
-import { useEffect, useReducer, useRef } from 'react';
+import { Alert } from '../../src/index';
 
 export function Example() {
-	const [state, dispatch] = useReducer(reducer, initialState);
+	const [state, dispatch] = React.useReducer(reducer, initialState);
 	const { messages, messageCount, bestFriendIsOnline } = state;
-	const interval = useRef(null);
+	const interval = React.useRef(null);
 
-	useEffect(() => {
+	React.useEffect(() => {
 		interval.current = setInterval(() => {
 			dispatch({ type: 'TOGGLE_BEST_FRIEND' });
 		}, getRandomInt(6000, 10000));
@@ -96,15 +96,15 @@ function reducer(state, action) {
 }
 
 function useMessageTimeout(messages, callback) {
-	const timeouts = useRef([]);
+	const timeouts = React.useRef([]);
 	const lastMessageCount = usePrevious(messages.length);
-	useEffect(() => {
+	React.useEffect(() => {
 		if (messages.length && lastMessageCount < messages.length) {
 			timeouts.current.push(window.setTimeout(callback, 5000));
 		}
 	}, [messages, lastMessageCount, callback]);
 
-	useEffect(() => {
+	React.useEffect(() => {
 		const allTimeouts = timeouts.current;
 		return () => {
 			allTimeouts.forEach(window.clearTimeout);

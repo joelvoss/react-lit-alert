@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { act } from "react-dom/test-utils";
 import { render as tlRender } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -58,5 +59,9 @@ export function render(element, options = {}) {
  * @returns {Promise<void>}
  */
 export async function wait(time) {
-	return await new Promise(res => setTimeout(res, time));
+	// NOTE(joel): Wrap our timeout in `act` because React components might
+	// re-render while we are waiting.
+	return await act(async () => {
+		await new Promise(res => setTimeout(res, time))
+	});
 }

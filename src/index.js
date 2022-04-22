@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { VisuallyHidden } from '@react-lit/visually-hidden';
 import {
 	usePrevious,
@@ -102,8 +102,8 @@ function createMirror(type, doc) {
 		} else {
 			let node = doc.createElement('div');
 			node.setAttribute(`data-react-lit-live-${type}`, 'true');
-			liveRegions[type] = node;
-			doc.body.appendChild(liveRegions[type]);
+			liveRegions[type] = createRoot(node);
+			doc.body.appendChild(node);
 			mount(element);
 		}
 	}
@@ -141,9 +141,9 @@ function renderAlerts() {
 	renderTimer = window.setTimeout(() => {
 		Object.keys(elements).forEach(elementType => {
 			const regionType = elementType;
-			const container = liveRegions[regionType];
-			if (container) {
-				render(
+			const containerRoot = liveRegions[regionType];
+			if (containerRoot) {
+				containerRoot.render(
 					<VisuallyHidden as="div">
 						<div
 							// @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_status_role
@@ -158,7 +158,6 @@ function renderAlerts() {
 							)}
 						</div>
 					</VisuallyHidden>,
-					liveRegions[regionType],
 				);
 			}
 		});
