@@ -45,33 +45,45 @@ let renderTimer;
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * Alert renders screen-reader-friendly alert messages.
+ * @typedef {Object} AlertProps
+ * @prop {string} [as]
+ * @prop {RegionTypes} type
  */
-export const Alert = React.forwardRef(
-	(
-		{ as: Comp = 'div', children, type: regionType = 'polite', ...props },
-		parentRef,
-	) => {
-		const ownRef = React.useRef(null);
-		const ref = useComposeRefs(parentRef, ownRef);
 
-		const child = React.useMemo(
-			() => (
-				<Comp {...props} ref={ref}>
-					{children}
-				</Comp>
-			),
-			// The mutable value `ref` isn't a valid dependency, so we can safely
-			// disable the exhaustive-deps rule.
-			// eslint-disable-next-line react-hooks/exhaustive-deps
-			[children, props],
-		);
+/**
+ * Alert renders screen-reader-friendly alert messages.
+ * @param {React.PropsWithChildren<AlertProps>} props
+ * @param {React.MutableRefObject} [parentRef]
+ */
+function _Alert(props, parentRef) {
+	const {
+		as: Comp = 'div',
+		type: regionType = 'polite',
+		children,
+		...rest
+	} = props;
 
-		useMirrorEffects(regionType, child, ownRef);
+	const ownRef = React.useRef(null);
+	const ref = useComposeRefs(parentRef, ownRef);
 
-		return child;
-	},
-);
+	const child = React.useMemo(
+		() => (
+			<Comp {...rest} ref={ref}>
+				{children}
+			</Comp>
+		),
+		// The mutable value `ref` isn't a valid dependency, so we can safely
+		// disable the exhaustive-deps rule.
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[children, rest],
+	);
+
+	useMirrorEffects(regionType, child, ownRef);
+
+	return child;
+}
+
+export const Alert = React.forwardRef(_Alert);
 
 ////////////////////////////////////////////////////////////////////////////////
 
