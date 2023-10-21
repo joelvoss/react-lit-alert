@@ -45,9 +45,7 @@ let renderTimer;
 ////////////////////////////////////////////////////////////////////////////////
 
 /**
- * @typedef {Object} AlertProps
- * @prop {string} [as]
- * @prop {RegionTypes} type
+ * @typedef {{ type: RegionTypes, as?: string, [key: string]: any}} AlertProps
  */
 
 /**
